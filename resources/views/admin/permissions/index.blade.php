@@ -83,7 +83,7 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.permissions.destroy', $permission) }}">
+                                    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('admin.permissions.destroy', $permission) }}', '{{ route('admin.permissions.index') }}', 'Permission: {{ $permission->name }}')">
                                         <i class="fas fa-trash">
                                         </i>
                                         Delete

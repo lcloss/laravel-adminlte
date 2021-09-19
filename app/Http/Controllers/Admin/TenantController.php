@@ -27,7 +27,9 @@ class TenantController extends Controller
    {
        abort_if(Gate::denies('tenant_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-       return view('admin.tenants.edit');
+       $statuses = Tenant::getStatuses();
+
+       return view('admin.tenants.edit', compact('statuses'));
    }
 
    public function store(StoreTenantRequest $request): RedirectResponse
@@ -50,7 +52,9 @@ class TenantController extends Controller
    {
        abort_if(Gate::denies('tenant_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-       return view('admin.tenants.edit', compact('tenant'));
+       $statuses = Tenant::getStatuses();
+
+       return view('admin.tenants.edit', compact('tenant', 'statuses'));
    }
 
    public function update(UpdateTenantRequest $request, Tenant $tenant): RedirectResponse
@@ -62,13 +66,14 @@ class TenantController extends Controller
        return redirect()->route('admin.tenants.index');
    }
 
-   public function destroy(Tenant $tenant): RedirectResponse
+   public function destroy(Tenant $tenant)
    {
        abort_if(Gate::denies('tenant_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
        $tenant->delete();
 
-       return redirect()->route('admin.tenants.index');
+       // return redirect()->route('admin.tenants.index');
+       return response()->json('OK');
    }
 
     public function massDestroy(MassDestroyTenantRequest $request)

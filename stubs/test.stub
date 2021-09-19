@@ -8,15 +8,13 @@ use Tests\TestCase;
 
 class {{ class }} extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    /** @test */
+    public function if_{{ modelVariable }}_has_{{ foreignVariable }}_relationship()
     {
-        $response = $this->get('/');
+        ${{ modelVariable }} = {{ model }}::factory()
+            ->for({{ foreign }}::factory()->create())
+            ->create();
 
-        $response->assertStatus(200);
+        $this->assertInstanceOf({{ foreign }}::class, ${{ modelVariable }}->{{ foreignVariable }});
     }
 }

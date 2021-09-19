@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Statusable;
 use App\Notifications\VerifyUserNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -14,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Statusable;
 
     /**
      * The attributes that are mass assignable.
@@ -97,11 +98,6 @@ class User extends Authenticatable
                 $user->notify(new VerifyUserNotification($user));
             }
         });
-    }
-
-    public function getStatusAttribute($value)
-    {
-        return __(config('constants.status.' . $value));
     }
 
     public function getVerifiedAtAttribute($value)

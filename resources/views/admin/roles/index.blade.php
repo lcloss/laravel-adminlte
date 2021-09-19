@@ -48,8 +48,11 @@
                             <th style="width: 1%">
                                 #
                             </th>
-                            <th style="width: 79%">
+                            <th style="width: 30%">
                                 Role Name
+                            </th>
+                            <th style="width: 49%">
+                                Access
                             </th>
                             <th style="width: 20%">
                             </th>
@@ -64,6 +67,11 @@
                                 <td>
                                     {{ $role->name ?? '' }}
                                 </td>
+                                <td>
+                                    @foreach( $role->permissions as $permission )
+                                        <span class="badge badge-primary">{{ $permission->name ?? '' }}</span>
+                                    @endforeach
+                                </td>
                                 <td class="project-actions text-right">
                                     <a class="btn btn-primary btn-sm" href="{{ route('admin.roles.show', $role) }}">
                                         <i class="fas fa-folder">
@@ -75,7 +83,7 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.roles.destroy', $role) }}">
+                                    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('admin.roles.destroy', $role) }}', '{{ route('admin.roles.index') }}', 'Role: {{ $role->name }}')">
                                         <i class="fas fa-trash">
                                         </i>
                                         Delete

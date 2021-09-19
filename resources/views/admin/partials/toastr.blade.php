@@ -7,14 +7,14 @@
             timer: 2500,
             timerProgressBar: true,
         });
-        @if ( $errors->any() )
-            @foreach ( $errors->all() as $error )
-                await Toast.fire({
-                    icon: 'error',
-                    title: '{{ $error }}'
-                })
-            @endforeach
-        @endif
+{{--        @if ( $errors->any() )--}}
+{{--            @foreach ( $errors->all() as $error )--}}
+{{--                await Toast.fire({--}}
+{{--                    icon: 'error',--}}
+{{--                    title: '{{ $error }}'--}}
+{{--                })--}}
+{{--            @endforeach--}}
+{{--        @endif--}}
         @foreach ( ['error', 'warning', 'success', 'info'] as $type_message )
             @if( Session::has('alert-' . $type_message) )
                 @foreach (Session::get('alert-' . $type_message) as $message)

@@ -2,6 +2,7 @@
 
 namespace {{ namespace }};
 
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class {{ class }} extends FormRequest
@@ -13,7 +14,7 @@ class {{ class }} extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Gate::allows('');
     }
 
     /**
@@ -24,7 +25,10 @@ class {{ class }} extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => [
+                'string',
+                'required',
+            ],
         ];
     }
 }

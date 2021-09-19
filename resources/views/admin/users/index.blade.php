@@ -49,17 +49,20 @@
                                 #
                             </th>
                             @if( Auth::user()->isAdmin )
-                                <th style="width: 21%">
+                                <th style="width: 16%">
                                     Tenant Name
                                 </th>
-                                <th style="width: 30%">
+                                <th style="width: 20%">
                                     User Name
                                 </th>
                             @else
-                                <th style="width: 51%">
+                                <th style="width: 36%">
                                     User Name
                                 </th>
                             @endif
+                            <th style="width: 16%">
+                                Email
+                            </th>
                             <th style="width: 10%">
                                 User Roles
                             </th>
@@ -91,6 +94,9 @@
                                     {{ $user->name ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $user->email ?? '' }}
+                                </td>
+                                <td>
                                     @foreach( $user->roles as $role )
                                         <span class="badge badge-primary">{{ $role->name ?? '' }}</span>
                                     @endforeach
@@ -115,7 +121,7 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.users.destroy', $user) }}">
+                                    <a class="btn btn-danger btn-sm" href="#"onclick="deleteObject('{{ route('admin.users.destroy', $user) }}', '{{ route('admin.users.index') }}', 'User: {{ $user->name }}')">
                                         <i class="fas fa-trash">
                                         </i>
                                         Delete

@@ -30,7 +30,9 @@ class PermissionController extends Controller
    {
        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-       return view('admin.permissions.create');
+       $roles = Role::pluck('name', 'id');
+
+       return view('admin.permissions.edit', compact('roles'));
    }
 
    public function store(StorePermissionRequest $request): RedirectResponse

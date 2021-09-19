@@ -4,83 +4,78 @@ namespace {{ namespace }};
 
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Requests\Store{{ model }}Request;
+use App\Http\Requests\Update{{ model }}Request;
+use App\Http\Requests\MassDestroy{{ model }}Request;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class {{ class }} extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+   public function index(): View
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+       ${{ modelVariable }}s = {{ model }}::all();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+       return view('{{ modelVariable }}s.index', compact('{{ modelVariable }}s'));
+   }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return \Illuminate\Http\Response
-     */
-    public function show({{ model }} ${{ modelVariable }})
-    {
-        //
-    }
+   public function create(): View
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return \Illuminate\Http\Response
-     */
-    public function edit({{ model }} ${{ modelVariable }})
-    {
-        //
-    }
+       return view('{{ modelVariable }}s.edit');
+   }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, {{ model }} ${{ modelVariable }})
-    {
-        //
-    }
+   public function store(Store{{ model }}Request $request): RedirectResponse
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy({{ model }} ${{ modelVariable }})
+       {{ model }}::create($request->validated());
+
+       return redirect()->route('{{ modelVariable }}s.index');
+   }
+
+   public function show({{ model }} ${{ modelVariable }}): View
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+       return view('{{ modelVariable }}s.show', compact('{{ modelVariable }}'));
+   }
+
+   public function edit({{ model }} ${{ modelVariable }}): View
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+       return view('{{ modelVariable }}s.edit', compact('{{ modelVariable }}'));
+   }
+
+   public function update(Update{{ model }}Request $request, {{ model }} ${{ modelVariable }}): RedirectResponse
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+       ${{ modelVariable }}->update($request->validated());
+
+       return redirect()->route('{{ modelVariable }}s.index');
+   }
+
+   public function destroy({{ model }} ${{ modelVariable }}): RedirectResponse
+   {
+       abort_if(Gate::denies('{{ modelVariable }}_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+       ${{ modelVariable }}->delete();
+
+       return redirect()->route('{{ modelVariable }}s.index');
+   }
+
+    public function massDestroy(MassDestroy{{ model }}Request $request)
     {
-        //
+        {{ model }}::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -1,4 +1,8 @@
 @extends('admin.layouts.app')
+@section('styles')
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}">
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -601,4 +605,17 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+@endsection
+@section('scripts')
+    <!-- JQVMap -->
+    <script src="{{ asset('assets/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+    <!-- ChartJS -->
+    <script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>
 @endsection

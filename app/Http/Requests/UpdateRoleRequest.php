@@ -33,10 +33,11 @@ class UpdateRoleRequest extends FormRequest
             ],
             'permissions.*' => [
                 'integer',
+                'nullable',
             ],
             'permissions' => [
-                'required',
                 'array',
+                'nullable',
             ],
         ];
     }

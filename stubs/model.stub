@@ -4,8 +4,24 @@ namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\Tenantable;
+use \DateTimeInterface;
 
 class {{ class }} extends Model
 {
-    use HasFactory;
+    use HasFactory, Tenantable;
+
+    public $table = '{{ table }}';
+
+    protected $dates = [
+        '',
+    ];
+
+    protected $fillable = [];
+    protected $guarded = ['id'];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format(config('panel.timestamp_format'));
+    }
 }

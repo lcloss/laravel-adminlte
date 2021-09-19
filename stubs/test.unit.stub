@@ -2,17 +2,18 @@
 
 namespace {{ namespace }};
 
+use App\Models\{{ model }};
 use PHPUnit\Framework\TestCase;
 
 class {{ class }} extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    /** @test */
+    public function check_if_{{ modelVariable }}s_columns_are_correct()
     {
-        $this->assertTrue(true);
+        ${{ modelVariable }} = new {{ model }};
+        $expected = [''];
+        $diff_columns = array_diff($expected, ${{ modelVariable }}->getFillable());
+
+        $this->assertCount(0, $diff_columns);
     }
 }

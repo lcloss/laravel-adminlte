@@ -32,9 +32,10 @@ class StoreRoleRequest extends FormRequest
             ],
             'permissions.*' => [
                 'integer',
+                'nullable',
             ],
             'permissions' => [
-                'required',
+                'nullable',
                 'array',
             ],
         ];

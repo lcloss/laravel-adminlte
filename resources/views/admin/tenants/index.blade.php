@@ -81,7 +81,7 @@
                                         </i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.tenants.destroy', $tenant) }}">
+                                    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('admin.tenants.destroy', $tenant) }}', '{{ route('admin.tenants.index') }}', 'Tenant: {{ $tenant->name }}')">
                                         <i class="fas fa-trash">
                                         </i>
                                         Delete

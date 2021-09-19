@@ -1,5 +1,10 @@
 @extends('auth.layouts.app')
 @section('content')
+    <div class="row">
+        <div class="col">
+            @include('admin.partials.error-messages')
+        </div>
+    </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">

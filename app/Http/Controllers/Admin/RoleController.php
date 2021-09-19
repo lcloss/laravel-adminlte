@@ -29,9 +29,23 @@ class RoleController extends Controller
    {
        abort_if(Gate::denies('role_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-       $permissions = Permission::pluck('name', 'id');
+       $permissions_group = [];
+       $permissions = Permission::orderBy('name')->pluck('name', 'id')->toArray();
+       foreach( $permissions as $id => $name ) {
+           $names = explode( '_', $name );
+           $access = array_pop( $names );
+           $group = implode( '_', $names );
 
-       return view('admin.roles.edit', compact('permissions'));
+           if ( !array_key_exists( $group, $permissions_group ) ) {
+               $permissions_group[$group] = [];
+           }
+           if ( !array_key_exists( $access, $permissions_group[$group] ) ) {
+               $permissions_group[$group][$access] = $id;
+           }
+       }
+
+
+       return view('admin.roles.edit', compact('permissions_group', 'permissions'));
    }
 
    public function store(StoreRoleRequest $request): RedirectResponse
@@ -47,7 +61,6 @@ class RoleController extends Controller
        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
        $permissions_group = [];
-
        $permissions = Permission::orderBy('name')->pluck('name', 'id')->toArray();
        foreach( $permissions as $id => $name ) {
            $names = explode( '_', $name );
@@ -57,11 +70,6 @@ class RoleController extends Controller
            if ( !array_key_exists( $group, $permissions_group ) ) {
                $permissions_group[$group] = [];
            }
-
-//           $permissions_group[$group][$access] = $id;
-//           if ( !array_key_exists( 'client', $permissions_group ) ) {
-//               $permissions_group['client'] = [];
-//           }
            if ( !array_key_exists( $access, $permissions_group[$group] ) ) {
                $permissions_group[$group][$access] = $id;
            }

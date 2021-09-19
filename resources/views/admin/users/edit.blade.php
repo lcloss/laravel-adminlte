@@ -45,47 +45,42 @@
                             @endif
                             @include('admin.partials.error-messages')
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="User Name" value="{{ old('user', $user->name ?? '') }}">
-                                        @error('name')
-                                        <span id="emailMsgError" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <!-- /.form-group -->
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="User Name" value="{{ old('user', $user->email ?? '') }}">
-                                        @error('email')
-                                        <span id="emailMsgError" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <!-- /.form-group -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <select id="status" name="status" class="form-control select2 @error('status') is-invalid @enderror">
-                                            <option value="">{{ __('global.pleaseSelect') }}</option>
-                                            @foreach( Config::get('constants.status') as $code => $value)
-                                                @if( isset( $user ) )
-                                                    <option value="{{ $code }}" @if( $code == old('status', $user->getRawOriginal('status') ) ) selected="selected" @endif>{{ __($value) }}</option>
-                                                @else
-                                                    <option value="{{ $code }}">{{ __($value) }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        @error('status')
-                                        <span id="emailMsgError" class="error invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <!-- /.form-group -->
-                                </div>
-                                <!-- /.col -->
+                                @if( Auth::user()->isAdmin )
+                                    <x-forms.input-select
+                                        name="tenant_id"
+                                        label="Tenant"
+                                        groupClass="col-md-6"
+                                        value="{{ old('tenant_id', $user->tenant_id ?? '') }}"
+                                        :options="$tenants"
+                                        required="false"
+                                    ></x-forms.input-select>
+                                @endif
+                                <x-forms.input-text
+                                    name="name"
+                                    type="name"
+                                    label="Name"
+                                    groupClass="col-md-6"
+                                    :value="old('name', $user->name ?? '')"
+                                    placeholder="User Name"
+                                    required="true"
+                                ></x-forms.input-text>
+                                <x-forms.input-text
+                                    name="email"
+                                    type="email"
+                                    label="Email"
+                                    groupClass="col-md-6"
+                                    :value="old('email', $user->email ?? '')"
+                                    placeholder="User email"
+                                    required="true"
+                                ></x-forms.input-text>
+                                <x-forms.input-select
+                                    name="status"
+                                    label="Status"
+                                    groupClass="col-md-3"
+                                    value="{{ isset( $user ) ? old('status', $user->getRawOriginal('status') ) : old('status') }}"
+                                    :options="$statuses"
+                                    required="true"
+                                ></x-forms.input-select>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Approval</label>
@@ -117,9 +112,21 @@
                             </div>
                             <!-- /.row -->
                             <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary px-5">{{ isset( $user ) ? 'Update' : 'Create' }}</button>
-                                    <a href="{{ route('admin.users.index') }}" role="button" class="btn btn-danger px-5">List</a>
+                                <div class="col-12 text-right">
+                                    <button type="submit" class="btn btn-success px-5">{{ isset( $user ) ? 'Update' : 'Create' }}</button>
+                                    @if( isset( $user ) )
+                                    @can('user_show')
+                                        <a href="{{ route('admin.users.show', $user) }}" role="button" class="btn btn-info px-5">View</a>
+                                    @endcan
+                                    @endif
+                                    @can('user_access')
+                                        <a href="{{ route('admin.users.index') }}" role="button" class="btn btn-primary px-5">List</a>
+                                    @endcan
+                                    @if( isset( $user ) )
+                                    @can('user_delete')
+                                        <a href="#" role="button" class="btn btn-danger px-5" onclick="deleteObject('{{ route('admin.users.destroy', $user) }}', '{{ route('admin.users.index') }}', 'User: {{ $user->name }}')">Delete</a>
+                                    @endcan
+                                    @endif
                                 </div>
                             </div>
                         </form>

@@ -50,4 +50,30 @@
             }
         })
     }
+
+    function deleteObject(url, callback, name) {
+        Swal.fire({
+            title: 'Do you want delete ' + name + '?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+            customClass: {
+                actions: 'my-actions',
+                cancelButton: 'order-1 right-gap',
+                confirmButton: 'order-2',
+                denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(url)
+                    .then(response => {
+                        location.href = callback;
+                    })
+                    .catch(error => {
+                        console.log('errors: ', error)
+                    })
+            }
+        })
+    }
 </script>

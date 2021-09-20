@@ -1,108 +1,39 @@
 @extends('admin.layouts.app')
 @section('content')
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Roles</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Roles</li>
-                        </ol>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
+    <x-views.list-view
+        title="Roles" title-singular="Role"
+        object="roles" object-singular="role"
+        :collection="$roles">
 
-        <!-- Main content -->
-        <section class="content">
+        <x-slot name="header">
+            <th style="width: 1%">
+                #
+            </th>
+            <th style="width: 30%">
+                Role Name
+            </th>
+            <th style="width: 49%">
+                Access
+            </th>
+        </x-slot>
 
-            <!-- Default box -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Roles</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    @can('role_create')
-                        <div class="row m-2">
-                            <div class="col-md-12">
-                                <a class="btn btn-primary px-4" role="button" href="{{ route('admin.roles.create') }}">New Role</a>
-                            </div>
-                        </div>
-                    @endcan
-                    <table class="table table-striped projects">
-                        <thead>
-                        <tr>
-                            <th style="width: 1%">
-                                #
-                            </th>
-                            <th style="width: 30%">
-                                Role Name
-                            </th>
-                            <th style="width: 49%">
-                                Access
-                            </th>
-                            <th style="width: 20%">
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach( $roles as $role )
-                            <tr>
-                                <td>
-                                    {{ $role->id }}
-                                </td>
-                                <td>
-                                    {{ $role->name ?? '' }}
-                                </td>
-                                <td>
-                                    @foreach( $role->permissions as $permission )
-                                        <span class="badge badge-primary">{{ $permission->name ?? '' }}</span>
-                                    @endforeach
-                                </td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.roles.show', $role) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.roles.edit', $role) }}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('admin.roles.destroy', $role) }}', '{{ route('admin.roles.index') }}', 'Role: {{ $role->name }}')">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
+        <x-slot name="data">
+            @foreach( $roles as $role )
+                <tr>
+                    <td>
+                        {{ $role->id }}
+                    </td>
+                    <td>
+                        {{ $role->name ?? '' }}
+                    </td>
+                    <td>
+                        @foreach( $role->permissions as $permission )
+                            <span class="badge badge-primary">{{ $permission->name ?? '' }}</span>
                         @endforeach
-                        </tbody>
-                    </table>
-                    <div class="row m-2">
-                        <div class="col-md-12">
-                            {{ $roles->links() }}
-                        </div>
-                    </div>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-        </section>
-        <!-- /.content -->
+                    </td>
+                    <x-row-actions object="roles" object-singular="role" :model="$role" title="Role" :ref="$role->name"></x-row-actions>
+                </tr>
+            @endforeach
+        </x-slot>
+    </x-views.list-view>
 @endsection

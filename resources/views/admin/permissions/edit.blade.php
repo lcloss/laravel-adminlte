@@ -3,7 +3,7 @@
     <x-views.edit-view
         title="Permissions" title-singular="Permission"
         object="permissions" object-singular="permission"
-        :model="$permission ?? null" :ref="$permission->name">
+        :model="$permission ?? null" :ref="$permission->name ?? ''">
 
         <div class="row">
             <x-forms.input-text

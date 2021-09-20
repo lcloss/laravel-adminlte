@@ -17,6 +17,12 @@
                     <span class="badge badge-primary">{{ $role->name ?? '' }}</span>
                 @endforeach
             </x-show-field>
+            <x-show-field colClass="col-md-3" label="Tokens">
+                @foreach( $user->tokens as $token )
+                    {{--                    <span class="badge badge-primary">{{ $role->name ?? '' }}</span>--}}
+                    {{ $token }}
+                @endforeach
+            </x-show-field>
             <x-show-field colClass="col-lg-2 col-md-3" label="Created at">{{ $user->created_at }}</x-show-field>
             <x-show-field colClass="col-lg-2 col-md-3" label="Updated at">{{ $user->updated_at }}</x-show-field>
         </div>

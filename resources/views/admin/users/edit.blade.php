@@ -6,7 +6,7 @@
     <x-views.edit-view
         title="Users" title-singular="User"
         object="users" object-singular="user"
-        :model="$user ?? null">
+        :model="$user ?? null" :ref="$user->name ?? ''">
 
         <div class="row">
             @if( Auth::user()->isAdmin )
@@ -21,7 +21,7 @@
             @endif
             <x-forms.input-text
                 name="name"
-                type="name"
+                type="text"
                 label="Name"
                 groupClass="col-md-6"
                 :value="old('name', $user->name ?? '')"
@@ -58,6 +58,24 @@
                     </div>
                 </div>
             </div>
+            <x-forms.input-text
+                name="password"
+                type="password"
+                label="Password"
+                groupClass="col-md-3"
+                :value="old('password', '')"
+                placeholder=""
+                required="false"
+            ></x-forms.input-text>
+            <x-forms.input-text
+                name="password_confirmation"
+                type="password"
+                label="Confirm password"
+                groupClass="col-md-3"
+                :value="old('password_confirmation', '')"
+                placeholder=""
+                required="false"
+            ></x-forms.input-text>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Roles</label>
@@ -73,6 +91,36 @@
                     @endforeach
                 </div>
             </div>
+            @if( isset( $none) )
+            <x-forms.input-text
+                name="api_token"
+                type="text"
+                label="Token"
+                groupClass="col-md-6"
+                value="{{ $user->api_token }}"
+                placeholder="API Token"
+                required="false"
+                disabled="disabled"
+            ></x-forms.input-text>
+            @endif
+            @if( isset( $user ) )
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="api_token" class="form-label">Token</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control  " id="api_token" name="api_token" value="{{ $user->api_token }}" placeholder="API Token" disabled="disabled">
+                    </div>
+                    <button type="button" class="btn btn-success mt-2" onclick="updateToken('{{ route('admin.users.updatetoken', $user) }}')" >Update token</button>
+                </div>
+            </div>
+            @endif
+                @if( isset( $none ))
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" onclick="updateToken('{{ route('admin.users.updatetoken', $user) }}', {{ Auth::user()->id }})" >Update token</button>
+                </div>
+            </div>
+                    @endif
         </div>
         <!-- /.row -->
 

@@ -28,7 +28,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         return view('admin.dashboards.index');
     })->name('dashboard');
 
+    Route::post('token/create', '\App\Http\Controllers\Admin\ApiTokenController@create')->name('token.create');
+
     Route::resource('tenants', '\App\Http\Controllers\Admin\TenantController');
+    Route::post('/users/{id}/token', '\App\Http\Controllers\Admin\ApiTokenController@updateUser')->name('users.updatetoken');
     Route::resource('users', '\App\Http\Controllers\Admin\UserController');
     Route::resource('roles', '\App\Http\Controllers\Admin\RoleController');
     Route::resource('permissions', '\App\Http\Controllers\Admin\PermissionController');

@@ -3,7 +3,7 @@
     <x-views.edit-view
         title="Tenants" title-singular="Tenant"
         object="tenants" object-singular="tenant"
-        :model="$tenant ?? null" :ref="$tenant->name">
+        :model="$tenant ?? null" :ref="$tenant->name ?? ''">
 
         <div class="row">
             <x-forms.input-text

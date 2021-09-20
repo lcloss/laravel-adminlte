@@ -101,9 +101,11 @@ class RoleController extends Controller
    {
        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+       $role->permissions()->sync([]);
        $role->delete();
 
        return back();
+       // return response()->json('OK');
    }
     public function massDestroy(MassDestroyRoleRequest $request)
     {

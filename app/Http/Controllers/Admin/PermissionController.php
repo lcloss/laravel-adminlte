@@ -73,6 +73,7 @@ class PermissionController extends Controller
    {
        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+       $permission->roles()->sync([]);
        $permission->delete();
 
        return back();

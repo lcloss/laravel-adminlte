@@ -51,7 +51,7 @@
         })
     }
 
-    function deleteObject(url, callback, name) {
+    function deleteObject(url, api_token, callback, name) {
         Swal.fire({
             title: 'Do you want delete ' + name + '?',
             showDenyButton: true,
@@ -66,14 +66,37 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(url)
+                axios.delete(url, {headers: {'Authorization' : 'Bearer ' + api_token, 'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
                     .then(response => {
                         location.href = callback;
                     })
                     .catch(error => {
-                        console.log('errors: ', error)
+                        console.error('errors: ', error);
+                        if ( error.response.data.message ) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 2500,
+                                timerProgressBar: true,
+                            });
+                            Toast.fire({
+                                icon: 'error',
+                                title: error.response.data.message
+                            })
+                        }
                     })
             }
         })
+    }
+
+    function updateToken(url) {
+        axios.post(url, {headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
+            .then(response => {
+                $("#api_token").val(response.data.token);
+            })
+            .catch(error => {
+                console.error('errors: ', error)
+            })
     }
 </script>

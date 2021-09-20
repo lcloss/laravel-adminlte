@@ -3,7 +3,7 @@
     <x-views.edit-view
         title="Roles" title-singular="Role"
         object="roles" object-singular="role"
-        :model="$role ?? null" :ref="$role->name">
+        :model="$role ?? null" :ref="$role->name ?? ''">
 
         <div class="row">
             <x-forms.input-text

@@ -12,7 +12,7 @@
     </a>
     @endcan
     @can($objectSingular . '_delete')
-    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('admin.' . $object . '.destroy', $model) }}', '{{ route('admin.' . $object . '.index') }}', '{{ $title }}: {{ $ref }}')">
+    <a class="btn btn-danger btn-sm" href="#" onclick="deleteObject('{{ route('api.admin.' . $object . '.destroy', $model) }}', '{{ Auth::user()->api_token }}', '{{ route('admin.' . $object . '.index') }}', '{{ $title }}: {{ $ref }}')">
         <i class="fas fa-trash"></i>
         Delete
     </a>

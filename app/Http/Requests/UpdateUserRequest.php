@@ -39,10 +39,11 @@ class UpdateUserRequest extends FormRequest
             ],
             'roles.*' => [
                 'integer',
+                'nullable',
             ],
             'roles' => [
-                'required',
                 'array',
+                'nullable',
             ],
         ];
     }

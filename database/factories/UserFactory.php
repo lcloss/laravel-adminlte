@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'verified'          => $is_verified,
             'verified_at'       => ( $is_verified ? now() : null ),
             'approved'          => ( $is_verified ? 1 : $is_approved ),
+            'api_token'         => Str::random(60),
         ];
     }
 

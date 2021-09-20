@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -39,7 +40,7 @@ class UserController extends Controller
 
    public function store(StoreUserRequest $request): RedirectResponse
    {
-       abort_if(Gate::denies('users_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
        $user = User::create($request->all());
        $user->roles()->sync($request->input('roles', []));
@@ -70,7 +71,13 @@ class UserController extends Controller
        }
        $this->checkUserApproval( $user, $request );
 
-       $user->update($request->all());
+       if ( $request->password == '' ) {
+           $user->update($request->except(['password']));
+       } else {
+           $request->merge(['password' => Hash::make($request->password)]);
+           $user->update($request->all());
+       }
+
        $user->roles()->sync($request->input('roles', []));
 
        return redirect()->route('admin.users.index');

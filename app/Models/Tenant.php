@@ -16,4 +16,9 @@ class Tenant extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function usersWithTrashed()
+    {
+        return $this->hasMany(User::class)->withTrashed();
+    }
 }

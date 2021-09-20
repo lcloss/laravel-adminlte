@@ -66,14 +66,15 @@ class TenantController extends Controller
        return redirect()->route('admin.tenants.index');
    }
 
-   public function destroy(Tenant $tenant)
+   public function destroy(Tenant $tenant): RedirectResponse
    {
        abort_if(Gate::denies('tenant_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
        $tenant->delete();
 
+       return back();
        // return redirect()->route('admin.tenants.index');
-       return response()->json('OK');
+       // return response()->json('OK');
    }
 
     public function massDestroy(MassDestroyTenantRequest $request)

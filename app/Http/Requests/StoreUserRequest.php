@@ -35,10 +35,11 @@ class StoreUserRequest extends FormRequest
             'password_confirmation' => ['required'],
             'roles.*' => [
                 'integer',
+                'nullable',
             ],
             'roles' => [
-                'required',
                 'array',
+                'nullable',
             ],
         ];
     }

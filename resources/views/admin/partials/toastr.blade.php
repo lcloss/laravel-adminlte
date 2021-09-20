@@ -4,7 +4,7 @@
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 2500,
+            timer: 3500,
             timerProgressBar: true,
         });
 {{--        @if ( $errors->any() )--}}
